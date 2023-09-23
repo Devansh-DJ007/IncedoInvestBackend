@@ -11,12 +11,9 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-//builder.Services.AddMediatR(typeof(Program));
 
-
-builder.Services.AddMediatR(typeof(LoginAdvisorHandler).GetTypeInfo().Assembly);
-//builder.Services.AddMediatR(typeof(RegisterAdvisorHandler).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies
+(typeof(RegisterAdvisorHandler).GetTypeInfo().Assembly));
 
 builder.Services.AddDbContext<AdvisorDbContextClass>(
     options =>
@@ -27,7 +24,6 @@ builder.Services.AddDbContext<AdvisorDbContextClass>(
     });
 
 builder.Services.AddScoped<IAdvisorRepository, AdvisorRepository>();
-builder.Services.AddMediatR(typeof(Program));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
