@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IncedoInvest.Application
+namespace IncedoInvest.Application.Services
 {
     public class Result<T>
     {

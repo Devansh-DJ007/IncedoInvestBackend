@@ -1,4 +1,5 @@
 ﻿using IncedoInvest.Application.Commands;
+using IncedoInvest.Application.Services;
 using IncedoInvest.Domain.Entities;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,22 +31,32 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
         {
             try
             {
-                // Check if a user with the same username already exists
-                if (await _advisorRepository.AdvisorExistsAsync(request.Username))
+                // Check if a user with the same email already exists
+                if (await _advisorRepository.AdvisorExistsAsync(request.Email))
                 {
                     return Result<string>.Fail("Username already exists");
                 }
 
-                // You should hash the password before storing it in the database
-                // For simplicity, this example does not include actual password hashing.
-                // You should use a secure hashing algorithm in your production code.
+                AdvisorDetails advisor;
 
-                var advisor = new AdvisorDetails
+                string salt = "zxcvb";
+
+                // Concatenating the salt with the user's password
+                string saltedPassword = $"{salt}{request.Password}";
+
+                // Computing the hash of the salted password
+                using (SHA256 sha256 = SHA256.Create())
                 {
-                    Username = request.Username,
-                    Password = request.Password, // Hash the password in a real application
-                                                 // Set other registration fields...
-                };
+                    byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
+                    string hashedPassword = Convert.ToBase64String(hashBytes);
+
+                    // Storing hashed password in the AdvisorDetails object
+                    advisor = new AdvisorDetails
+                    {
+                        Email = request.Email,
+                        Password = hashedPassword,
+                    };
+                }
 
                 await _advisorRepository.AddAdvisorAsync(advisor);
 
@@ -70,7 +82,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
                 var claims = new[]
                 {
             new Claim(JwtRegisteredClaimNames.Sub, advisor.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Username),
+            new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

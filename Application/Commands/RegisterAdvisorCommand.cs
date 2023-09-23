@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using IncedoInvest.Application.Services;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace IncedoInvest.Application.Commands
 {
     public class RegisterAdvisorCommand : IRequest<Result<string>>
     {
-        public string Username { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
     }
 }

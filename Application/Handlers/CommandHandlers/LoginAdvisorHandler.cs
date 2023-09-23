@@ -1,4 +1,5 @@
 ﻿using IncedoInvest.Application.Commands;
+using IncedoInvest.Application.Services;
 using IncedoInvest.Domain.Entities;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,9 +32,20 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
             try
             {
                 // Implement advisor login logic using _advisorRepository
-                var advisor = await _advisorRepository.GetAdvisorByUsernameAsync(request.Username);
+                var advisor = await _advisorRepository.GetAdvisorByEmailAsync(request.Email);
 
-                if (advisor == null || !VerifyPassword(request.Password, advisor.Password))
+                string hashedPassword = "";
+                string salt = "zxcvb";
+                string saltedPassword = $"{salt}{request.Password}";
+
+                // Computing the hash of the salted password
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
+                    hashedPassword = Convert.ToBase64String(hashBytes);
+                }
+
+                if (advisor == null || !VerifyPassword(advisor.Password, hashedPassword))
                 {
                     return Result<string>.Fail("Invalid username or password");
                 }
@@ -65,7 +78,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
                 var claims = new[]
                 {
             new Claim(JwtRegisteredClaimNames.Sub, advisor.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Username),
+            new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 

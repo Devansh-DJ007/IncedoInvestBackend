@@ -7,11 +7,11 @@ namespace IncedoInvest.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdvisorController : ControllerBase
+    public class AdvisorAuthController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AdvisorController(IMediator mediator)
+        public AdvisorAuthController(IMediator mediator)
         {
             _mediator = mediator;
         }

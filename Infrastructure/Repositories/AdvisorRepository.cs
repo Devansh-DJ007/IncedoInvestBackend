@@ -32,11 +32,11 @@ namespace IncedoInvest.Infrastructure.Repositories
             }
         }
 
-        public async Task<AdvisorDetails> GetAdvisorByUsernameAsync(string username)
+        public async Task<AdvisorDetails> GetAdvisorByEmailAsync(string email)
         {
             try
             {
-                return await _dbContext.Advisors.SingleOrDefaultAsync(a => a.Username == username);
+                return await _dbContext.Advisors.SingleOrDefaultAsync(a => a.Email == email);
             }
             catch (Exception ex)
             {
@@ -112,11 +112,11 @@ namespace IncedoInvest.Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> AdvisorExistsAsync(string username)
+        public async Task<bool> AdvisorExistsAsync(string email)
         {
             try
             {
-                return await _dbContext.Advisors.AnyAsync(a => a.Username == username);
+                return await _dbContext.Advisors.AnyAsync(a => a.Email == email);
             }
             catch (Exception ex)
             {

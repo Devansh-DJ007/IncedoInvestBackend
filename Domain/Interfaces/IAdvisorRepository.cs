@@ -11,7 +11,7 @@ namespace IncedoInvest.Domain.Interfaces
     {
         public Task<bool> AdvisorExistsAsync(string username);
         public Task<AdvisorDetails> GetAdvisorByIdAsync(int id);
-        public Task<AdvisorDetails> GetAdvisorByUsernameAsync(string username);
+        public Task<AdvisorDetails> GetAdvisorByEmailAsync(string username);
         public Task AddAdvisorAsync(AdvisorDetails advisor);
         public Task UpdateAdvisorAsync(AdvisorDetails advisor);
         public Task DeleteAdvisorAsync(int id);
