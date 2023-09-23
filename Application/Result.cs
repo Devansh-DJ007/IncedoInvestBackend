@@ -21,7 +21,7 @@ namespace IncedoInvest.Application
 
         public static Result<T> Success(T data)
         {
-            return new Result<T>(true, data, null);
+            return new Result<T>(true, data, "Success");
         }
 
         public static Result<T> Fail(string errorMessage)

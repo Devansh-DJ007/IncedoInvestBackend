@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Infrastructure.Repositories
 {
-    public class AdvisorRepository: IAdvisorRepository
+    public class AdvisorRepository : IAdvisorRepository
     {
         private readonly AdvisorDbContextClass _dbContext;
 
@@ -21,12 +21,28 @@ namespace IncedoInvest.Infrastructure.Repositories
 
         public async Task<AdvisorDetails> GetAdvisorByIdAsync(int Id)
         {
-            return await _dbContext.Advisors.Where(x => x.Id == Id).FirstOrDefaultAsync();
+            try
+            {
+                return await _dbContext.Advisors.Where(x => x.Id == Id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception here
+                throw; // Rethrow the exception to propagate it up the call stack
+            }
         }
 
         public async Task<AdvisorDetails> GetAdvisorByUsernameAsync(string username)
         {
-            return await _dbContext.Advisors.SingleOrDefaultAsync(a => a.Username == username);
+            try
+            {
+                return await _dbContext.Advisors.SingleOrDefaultAsync(a => a.Username == username);
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception here
+                throw; // Rethrow the exception to propagate it up the call stack
+            }
         }
 
         public async Task AddAdvisorAsync(AdvisorDetails advisor)
@@ -36,8 +52,23 @@ namespace IncedoInvest.Infrastructure.Repositories
                 throw new ArgumentNullException(nameof(advisor));
             }
 
-            _dbContext.Advisors.Add(advisor);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Advisors.Add(advisor);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Log the inner exception for detailed error information
+                var innerException = ex.InnerException;
+                // Log or inspect innerException to see the specific error message
+                if (innerException != null)
+                {
+                    // Log or inspect the innerException to see the specific error message
+                    Console.WriteLine($"Inner Exception: {innerException.Message}");
+                }
+                throw; // Rethrow the exception to propagate it up the call stack
+            }
         }
 
         public async Task UpdateAdvisorAsync(AdvisorDetails advisor)
@@ -47,8 +78,18 @@ namespace IncedoInvest.Infrastructure.Repositories
                 throw new ArgumentNullException(nameof(advisor));
             }
 
-            _dbContext.Advisors.Update(advisor);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Advisors.Update(advisor);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Log the inner exception for detailed error information
+                var innerException = ex.InnerException;
+                // Log or inspect innerException to see the specific error message
+                throw; // Rethrow the exception to propagate it up the call stack
+            }
         }
 
         public async Task DeleteAdvisorAsync(int id)
@@ -56,13 +97,32 @@ namespace IncedoInvest.Infrastructure.Repositories
             var advisorToDelete = await _dbContext.Advisors.FindAsync(id);
             if (advisorToDelete != null)
             {
-                _dbContext.Advisors.Remove(advisorToDelete);
-                await _dbContext.SaveChangesAsync();
+                try
+                {
+                    _dbContext.Advisors.Remove(advisorToDelete);
+                    await _dbContext.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    // Log the inner exception for detailed error information
+                    var innerException = ex.InnerException;
+                    // Log or inspect innerException to see the specific error message
+                    throw; // Rethrow the exception to propagate it up the call stack
+                }
             }
         }
+
         public async Task<bool> AdvisorExistsAsync(string username)
         {
-            return await _dbContext.Advisors.AnyAsync(a => a.Username == username);
+            try
+            {
+                return await _dbContext.Advisors.AnyAsync(a => a.Username == username);
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception here
+                throw; // Rethrow the exception to propagate it up the call stack
+            }
         }
     }
 }

@@ -22,15 +22,14 @@ namespace IncedoInvest.Api.Controllers
         {
             var result = await _mediator.Send(command);
 
-            return (IActionResult)result;
-            //if (result.IsSuccess)
-            //{
-            //    return Ok(new { Token = result.Data });
-            //}
-            //else
-            //{
-            //    return Unauthorized(); // Invalid username or password
-            //}
+            if (result.IsSuccess)
+            {
+                return Ok(new { Token = result.Data });
+            }
+            else
+            {
+                return Unauthorized(); // Invalid username or password
+            }
         }
 
         [HttpPost("register")]
@@ -38,15 +37,14 @@ namespace IncedoInvest.Api.Controllers
         {
             var result = await _mediator.Send(command);
 
-            return (IActionResult)result;
-            //if (result.IsSuccess) 
-            //{
-            //    return Ok("Registration successful");
-            //}
-            //else
-            //{
-            //    return BadRequest();
-            //}
+            if (result.IsSuccess)
+            {
+                return Ok("Registration successful");
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
