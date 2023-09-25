@@ -77,7 +77,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
 
                 var claims = new[]
                 {
-            new Claim(JwtRegisteredClaimNames.Sub, advisor.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, advisor.UserID.ToString()),
             new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };

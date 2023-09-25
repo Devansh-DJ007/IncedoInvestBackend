@@ -23,7 +23,7 @@ namespace IncedoInvest.Infrastructure.Repositories
         {
             try
             {
-                return await _dbContext.Advisors.Where(x => x.Id == Id).FirstOrDefaultAsync();
+                return await _dbContext.Advisors.Where(x => x.UserID == Id).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {

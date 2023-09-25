@@ -38,6 +38,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
                 }
 
                 AdvisorDetails advisor;
+                string hashedPassword;
 
                 string salt = "zxcvb";
 
@@ -48,15 +49,30 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
                 using (SHA256 sha256 = SHA256.Create())
                 {
                     byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
-                    string hashedPassword = Convert.ToBase64String(hashBytes);
-
-                    // Storing hashed password in the AdvisorDetails object
-                    advisor = new AdvisorDetails
-                    {
-                        Email = request.Email,
-                        Password = hashedPassword,
-                    };
+                    hashedPassword = Convert.ToBase64String(hashBytes);
                 }
+                advisor = new AdvisorDetails
+                {
+                    Email = request.Email,
+                    Password = hashedPassword,
+                    RoleID = 111111,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Address = request.Address,
+                    City = request.City,
+                    State = request.State,
+                    Phone = request.Phone,
+                    AdvisorID = "111111",
+                    AgentID = "111111",
+                    ClientID = "111111",
+                    Company = request.Company,
+                    SortName = $"{request.LastName}{request.FirstName}",
+                    Active = true,
+                    CreatedDate = DateTime.Now,
+                    ModifiedBy = _configuration["Jwt:Issuer"],
+                    ModifiedDate = DateTime.Now,
+                    DeletedFlag = false
+                };
 
                 await _advisorRepository.AddAdvisorAsync(advisor);
 
@@ -81,10 +97,10 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
 
                 var claims = new[]
                 {
-            new Claim(JwtRegisteredClaimNames.Sub, advisor.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, advisor.UserID.ToString()),
             new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+                };
 
                 var token = new JwtSecurityToken(
                     _configuration["Jwt:Issuer"],
@@ -99,7 +115,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
             {
                 Console.WriteLine($"Message: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                throw; // Rethrow the exception to propagate it up the call stack
+                throw;
             }
         }
     }
