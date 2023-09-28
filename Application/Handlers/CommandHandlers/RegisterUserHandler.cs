@@ -16,28 +16,28 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.Handlers.CommandHandlers
 {
-    public class RegisterAdvisorHandler : IRequestHandler<RegisterAdvisorCommand, Result<string>>
+    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result<string>>
     {
-        private readonly IAdvisorRepository _advisorRepository;
+        private readonly IUserRepository _advisorRepository;
         private readonly IConfiguration _configuration;
 
-        public RegisterAdvisorHandler(IAdvisorRepository advisorRepository, IConfiguration configuration)
+        public RegisterUserHandler(IUserRepository advisorRepository, IConfiguration configuration)
         {
             _advisorRepository = advisorRepository;
             _configuration = configuration;
         }
 
-        public async Task<Result<string>> Handle(RegisterAdvisorCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 // Check if a user with the same email already exists
-                if (await _advisorRepository.AdvisorExistsAsync(request.Email))
+                if (await _advisorRepository.UserExistsAsync(request.Email))
                 {
                     return Result<string>.Fail("Username already exists");
                 }
 
-                AdvisorDetails advisor;
+                Users user;
                 string hashedPassword;
 
                 string salt = "zxcvb";
@@ -51,11 +51,11 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
                     byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
                     hashedPassword = Convert.ToBase64String(hashBytes);
                 }
-                advisor = new AdvisorDetails
+                user = new Users
                 {
                     Email = request.Email,
                     Password = hashedPassword,
-                    RoleID = 111111,
+                    RoleID = request.RoleID,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Address = request.Address,
@@ -74,10 +74,10 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
                     DeletedFlag = false
                 };
 
-                await _advisorRepository.AddAdvisorAsync(advisor);
+                await _advisorRepository.AddUserAsync(user);
 
                 // Generate and return a JWT token for the newly registered advisor
-                var token = GenerateJwtToken(advisor);
+                var token = GenerateJwtToken(user);
                 return Result<string>.Success(token);
             }
             catch (Exception ex)
@@ -88,7 +88,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
 
         // Implement JWT token generation logic using _configuration
         // Return the generated token
-        private string GenerateJwtToken(AdvisorDetails advisor)
+        private string GenerateJwtToken(Users user)
         {
             try
             {
@@ -97,8 +97,8 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
 
                 var claims = new[]
                 {
-            new Claim(JwtRegisteredClaimNames.Sub, advisor.UserID.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 

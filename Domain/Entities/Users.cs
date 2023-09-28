@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Domain.Entities
 {
-    public class AdvisorDetails
+    public class Users
     {
         [Key]
         public int UserID { get; set; }
@@ -21,7 +21,7 @@ namespace IncedoInvest.Domain.Entities
         [StringLength(255, ErrorMessage = "Must be between 5 and 255 characters", MinimumLength = 5)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Role is required")]
+        [Required(ErrorMessage = "RoleID is required")]
         public int RoleID { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
@@ -74,5 +74,8 @@ namespace IncedoInvest.Domain.Entities
 
         [Required(ErrorMessage = "Deleted Flag is required")]
         public bool DeletedFlag { get; set; }
+
+        [ForeignKey("RoleID")]
+        public Role Role { get; set; }
     }
 }

@@ -18,10 +18,10 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
 {
     public class LoginAdvisorHandler : IRequestHandler<LoginAdvisorCommand, Result<string>>
     {
-        private readonly IAdvisorRepository _advisorRepository;
+        private readonly IUserRepository _advisorRepository;
         private readonly IConfiguration _configuration;
 
-        public LoginAdvisorHandler(IAdvisorRepository advisorRepository, IConfiguration configuration)
+        public LoginAdvisorHandler(IUserRepository advisorRepository, IConfiguration configuration)
         {
             _advisorRepository = advisorRepository;
             _configuration = configuration;
@@ -32,7 +32,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
             try
             {
                 // Implement advisor login logic using _advisorRepository
-                var advisor = await _advisorRepository.GetAdvisorByEmailAsync(request.Email);
+                var advisor = await _advisorRepository.GetUserByEmailAsync(request.Email);
 
                 string hashedPassword = "";
                 string salt = "zxcvb";
@@ -68,7 +68,7 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
             return password == passwordHash;
         }
 
-        private string GenerateJwtToken(AdvisorDetails advisor)
+        private string GenerateJwtToken(Users user)
         {
             try
             {
@@ -77,8 +77,8 @@ namespace IncedoInvest.Application.Handlers.CommandHandlers
 
                 var claims = new[]
                 {
-            new Claim(JwtRegisteredClaimNames.Sub, advisor.UserID.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, advisor.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 

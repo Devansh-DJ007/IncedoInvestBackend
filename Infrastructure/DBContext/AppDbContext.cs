@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Infrastructure.DBContext
 {
-    public class AdvisorDbContextClass: DbContext
+    public class AppDbContextClass: DbContext
     {
         protected readonly IConfiguration Configuration;
 
-        public AdvisorDbContextClass(IConfiguration configuration)
+        public AppDbContextClass(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -22,6 +22,10 @@ namespace IncedoInvest.Infrastructure.DBContext
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
         }
 
-        public DbSet<AdvisorDetails> Advisors { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<InvestorInfo> InvestorInfos { get; set; }
+        public DbSet<InvestmentType> InvestmentTypes { get; set; }
+        public DbSet<InvestmentStrategy> InvestmentStrategies { get; set; }
     }
 }

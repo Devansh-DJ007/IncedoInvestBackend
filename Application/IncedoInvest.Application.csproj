@@ -26,9 +26,4 @@
     <ProjectReference Include="..\Domain\IncedoInvest.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handlers\QueryHandlers\" />
-    <Folder Include="Queries\" />
-  </ItemGroup>
-
 </Project>

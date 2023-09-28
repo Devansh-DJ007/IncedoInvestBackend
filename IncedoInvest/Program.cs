@@ -15,15 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies
-(typeof(RegisterAdvisorHandler).GetTypeInfo().Assembly));
-builder.Services.AddDbContext<AdvisorDbContextClass>(
+(typeof(RegisterUserHandler).GetTypeInfo().Assembly));
+builder.Services.AddDbContext<AppDbContextClass>(
     options =>
     {
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection"),
             x => x.MigrationsAssembly("IncedoInvest.Infrastructure"));
     });
-builder.Services.AddScoped<IAdvisorRepository, AdvisorRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -45,6 +45,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 var app = builder.Build();
+
+app.UseCors(policy => policy.AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .SetIsOriginAllowed(origin => true)
+                            .AllowCredentials());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Infrastructure.Repositories
 {
-    public class AdvisorRepository : IAdvisorRepository
+    public class UserRepository : IUserRepository
     {
-        private readonly AdvisorDbContextClass _dbContext;
+        private readonly AppDbContextClass _dbContext;
 
-        public AdvisorRepository(AdvisorDbContextClass dbContext)
+        public UserRepository(AppDbContextClass dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<AdvisorDetails> GetAdvisorByIdAsync(int Id)
+        public async Task<Users> GetUserByIdAsync(int Id)
         {
             try
             {
-                return await _dbContext.Advisors.Where(x => x.UserID == Id).FirstOrDefaultAsync();
+                return await _dbContext.Users.Where(x => x.UserID == Id).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -32,11 +32,11 @@ namespace IncedoInvest.Infrastructure.Repositories
             }
         }
 
-        public async Task<AdvisorDetails> GetAdvisorByEmailAsync(string email)
+        public async Task<Users> GetUserByEmailAsync(string email)
         {
             try
             {
-                return await _dbContext.Advisors.SingleOrDefaultAsync(a => a.Email == email);
+                return await _dbContext.Users.SingleOrDefaultAsync(a => a.Email == email);
             }
             catch (Exception ex)
             {
@@ -45,42 +45,39 @@ namespace IncedoInvest.Infrastructure.Repositories
             }
         }
 
-        public async Task AddAdvisorAsync(AdvisorDetails advisor)
+        public async Task AddUserAsync(Users user)
         {
-            if (advisor == null)
+            if (user == null)
             {
-                throw new ArgumentNullException(nameof(advisor));
+                throw new ArgumentNullException(nameof(user));
             }
 
             try
             {
-                _dbContext.Advisors.Add(advisor);
+                _dbContext.Users.Add(user);
                 await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
-                // Log the inner exception for detailed error information
                 var innerException = ex.InnerException;
-                // Log or inspect innerException to see the specific error message
                 if (innerException != null)
                 {
-                    // Log or inspect the innerException to see the specific error message
                     Console.WriteLine($"Inner Exception: {innerException.Message}");
                 }
-                throw; // Rethrow the exception to propagate it up the call stack
+                throw;
             }
         }
 
-        public async Task UpdateAdvisorAsync(AdvisorDetails advisor)
+        public async Task UpdateUserAsync(Users user)
         {
-            if (advisor == null)
+            if (user == null)
             {
-                throw new ArgumentNullException(nameof(advisor));
+                throw new ArgumentNullException(nameof(user));
             }
 
             try
             {
-                _dbContext.Advisors.Update(advisor);
+                _dbContext.Users.Update(user);
                 await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
@@ -92,14 +89,14 @@ namespace IncedoInvest.Infrastructure.Repositories
             }
         }
 
-        public async Task DeleteAdvisorAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
-            var advisorToDelete = await _dbContext.Advisors.FindAsync(id);
-            if (advisorToDelete != null)
+            var userToDelete = await _dbContext.Users.FindAsync(id);
+            if (userToDelete != null)
             {
                 try
                 {
-                    _dbContext.Advisors.Remove(advisorToDelete);
+                    _dbContext.Users.Remove(userToDelete);
                     await _dbContext.SaveChangesAsync();
                 }
                 catch (DbUpdateException ex)
@@ -112,17 +109,24 @@ namespace IncedoInvest.Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> AdvisorExistsAsync(string email)
+        public async Task<bool> UserExistsAsync(string email)
         {
             try
             {
-                return await _dbContext.Advisors.AnyAsync(a => a.Email == email);
+                return await _dbContext.Users.AnyAsync(a => a.Email == email);
             }
             catch (Exception ex)
             {
-                // Log or handle the exception here
-                throw; // Rethrow the exception to propagate it up the call stack
+                throw;
             }
+        }
+        public async Task<List<Users>> GetUsersAsync()
+        {
+            return await _dbContext.Users.ToListAsync();
+        }
+        public async Task<List<Users>> GetUsersByRoleIdAsync(int roleId)
+        {
+            return await _dbContext.Users.Where(u => u.RoleID == roleId).ToListAsync();
         }
     }
 }
