@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.Commands
 {
-    public class LoginAdvisorCommand : IRequest<Result<string>>
+    public class LoginUserCommand : IRequest<Result<string>>
     {
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]

@@ -111,16 +111,9 @@ namespace IncedoInvest.Infrastructure.Repositories
 
         public async Task<bool> UserExistsAsync(string email)
         {
-            try
-            {
-                return await _dbContext.Users.AnyAsync(a => a.Email == email);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return await _dbContext.Users.AnyAsync(a => a.Email == email);   
         }
-        public async Task<List<Users>> GetUsersAsync()
+        public async Task<List<Users>> GetAllUsersAsync()
         {
             return await _dbContext.Users.ToListAsync();
         }

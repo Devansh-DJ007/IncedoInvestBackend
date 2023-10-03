@@ -1,30 +1,27 @@
-﻿using IncedoInvest.Application.Commands;
-using IncedoInvest.Application.Queries;
-using IncedoInvest.Application.User.Queries;
+﻿using IncedoInvest.Application.AdvisorApp.Commands;
+using IncedoInvest.Application.AdvisorApp.Queries;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace IncedoInvest.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AdvisorController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUserRepository _userRepository;
+        private readonly IAdvisorRepository _advisorRepository;
 
-        public UserController(IMediator mediator, IUserRepository userRepository)
+        public AdvisorController(IMediator mediator, IAdvisorRepository advisorRepository)
         {
             _mediator = mediator;
-            _userRepository = userRepository;
+            _advisorRepository = advisorRepository;
         }
 
         [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginAdvisorCommand command)
         {
             var result = await _mediator.Send(command);
 
@@ -39,10 +36,10 @@ namespace IncedoInvest.Api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterAdvisorCommand command)
         {
-            var userExists = await _userRepository.UserExistsAsync(command.Email);
-            if (userExists)
+            var advisorExists = await _advisorRepository.AdvisorExistsAsync(command.Email);
+            if (advisorExists)
             {
                 return BadRequest("Email already exists");
             }
@@ -58,15 +55,14 @@ namespace IncedoInvest.Api.Controllers
                 return BadRequest();
             }
         }
-
-        [HttpGet("Users")]
-        public async Task<IActionResult> GetUsers([FromQuery] GetAllUsersQuery query)
+        [HttpGet("GetAdvisor")]
+        public async Task<IActionResult> GetAdvisor([FromQuery] GetAllAdvisorQuery query)
         {
-            var users = await _mediator.Send(query);
+            var advisors = await _mediator.Send(query);
 
-            if (users is not null)
+            if (advisors is not null)
             {
-                return Ok(users);
+                return Ok(advisors);
             }
             else
             {
@@ -74,16 +70,8 @@ namespace IncedoInvest.Api.Controllers
             }
         }
 
-        [HttpGet("UsersByRole/{roleId}")]
-        public async Task<IActionResult> GetUsersByRoleId([FromQuery] GetUsersByRoleIDQuery query)
-        {
-            var result = await _mediator.Send(query);
-
-            return Ok(result);
-        }
-
-        [HttpPut("users/{userId}")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
+        [HttpPut("UpdateAdvisor/{advisorEmail}")]
+        public async Task<IActionResult> UpdateAdvisor([FromBody] UpdateAdvisorCommand command)
         {
             var result = await _mediator.Send(command);
 
@@ -98,6 +86,22 @@ namespace IncedoInvest.Api.Controllers
             else
             {
                 return BadRequest(result.ErrorMessage);
+            }
+        }
+
+        [HttpDelete("Advisor/{advisorId}")]
+        public async Task<IActionResult> DeleteUser(int advisorId)
+        {
+            var command = new DeleteAdvisorCommand { AdvisorId = advisorId };
+            var result = await _mediator.Send(command);
+
+            if (result.IsSuccess)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
             }
         }
     }

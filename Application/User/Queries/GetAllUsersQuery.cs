@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IncedoInvest.Application.Queries
+namespace IncedoInvest.Application.User.Queries
 {
-    public class GetUsersQuery : IRequest<List<Users>>
+    public class GetAllUsersQuery : IRequest<List<Users>>
     {
 
     }

@@ -1,5 +1,5 @@
 using FluentAssertions.Common;
-using IncedoInvest.Application.Handlers.CommandHandlers;
+using IncedoInvest.Application.AdvisorApp.Handlers.CommandHandlers;
 using IncedoInvest.Domain.Interfaces;
 using IncedoInvest.Infrastructure.DBContext;
 using IncedoInvest.Infrastructure.Repositories;
@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies
-(typeof(RegisterUserHandler).GetTypeInfo().Assembly));
+(typeof(RegisterAdvisorHandler).GetTypeInfo().Assembly));
 builder.Services.AddDbContext<AppDbContextClass>(
     options =>
     {
@@ -24,6 +24,8 @@ builder.Services.AddDbContext<AppDbContextClass>(
             x => x.MigrationsAssembly("IncedoInvest.Infrastructure"));
     });
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAdvisorRepository, AdvisorRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

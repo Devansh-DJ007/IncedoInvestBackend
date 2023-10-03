@@ -15,7 +15,7 @@ namespace IncedoInvest.Domain.Interfaces
         public Task AddUserAsync(Users user);
         public Task UpdateUserAsync(Users user);
         public Task DeleteUserAsync(int id);
-        public Task<List<Users>> GetUsersAsync();
+        public Task<List<Users>> GetAllUsersAsync();
         public Task<List<Users>> GetUsersByRoleIdAsync(int roleId);
     }
 }

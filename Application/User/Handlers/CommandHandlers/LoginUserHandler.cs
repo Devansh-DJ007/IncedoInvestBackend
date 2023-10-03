@@ -16,18 +16,18 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.Handlers.CommandHandlers
 {
-    public class LoginAdvisorHandler : IRequestHandler<LoginAdvisorCommand, Result<string>>
+    public class LoginUserHandler : IRequestHandler<LoginUserCommand, Result<string>>
     {
         private readonly IUserRepository _advisorRepository;
         private readonly IConfiguration _configuration;
 
-        public LoginAdvisorHandler(IUserRepository advisorRepository, IConfiguration configuration)
+        public LoginUserHandler(IUserRepository advisorRepository, IConfiguration configuration)
         {
             _advisorRepository = advisorRepository;
             _configuration = configuration;
         }
 
-        public async Task<Result<string>> Handle(LoginAdvisorCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             try
             {
