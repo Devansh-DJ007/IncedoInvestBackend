@@ -45,6 +45,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+//GIT Testing 1
+
 var app = builder.Build();
 
 app.UseCors(policy => policy.AllowAnyHeader()
