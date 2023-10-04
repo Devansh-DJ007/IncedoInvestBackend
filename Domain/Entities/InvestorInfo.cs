@@ -34,8 +34,5 @@ namespace IncedoInvest.Domain.Entities
 
         [Required(ErrorMessage = "Deleted Flag is required")]
         public bool DeletedFlag { get; set; }
-
-        [ForeignKey("UserID")]
-        public Users Users { get; set; }
     }
 }

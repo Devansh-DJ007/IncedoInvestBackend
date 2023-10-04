@@ -1,5 +1,4 @@
 ﻿using IncedoInvest.Application.AdvisorApp.Queries;
-using IncedoInvest.Application.User.Queries;
 using IncedoInvest.Domain.Entities;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;

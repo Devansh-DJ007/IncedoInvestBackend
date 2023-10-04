@@ -23,7 +23,6 @@ builder.Services.AddDbContext<AppDbContextClass>(
             builder.Configuration.GetConnectionString("DefaultConnection"),
             x => x.MigrationsAssembly("IncedoInvest.Infrastructure"));
     });
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAdvisorRepository, AdvisorRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
