@@ -129,5 +129,14 @@ namespace IncedoInvest.Infrastructure.Repositories
 
             return userExists;
         }
+
+        public async Task<List<User>> GetClientsByAdvisorIdAsync(string advisorId)
+        {
+            var clients = await _dbContext.Users
+                .Where(user => user.AdvisorId == advisorId && user.AdvisorId != null)
+                .ToListAsync();
+
+            return clients;
+        }
     }
 }

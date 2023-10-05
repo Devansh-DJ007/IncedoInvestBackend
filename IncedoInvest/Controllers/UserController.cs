@@ -84,6 +84,15 @@ namespace IncedoInvest.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("ClientsByAdvisor/{advisorId}")]
+        public async Task<IActionResult> GetClientsByAdvisorId(string advisorId)
+        {
+            var query = new GetClientsByAdvisorIdQuery { advisorId = advisorId };
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
+
         [HttpPut("users/{userId}")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {

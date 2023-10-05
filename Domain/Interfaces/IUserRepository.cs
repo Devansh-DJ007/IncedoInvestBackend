@@ -19,5 +19,6 @@ namespace IncedoInvest.Domain.Interfaces
         public Task<List<User>> GetUsersByRoleIdAsync(int roleId);
         public Task<bool> CheckUserExistsWithAdvisorIdAsync(string advisorId);
         public Task<bool> CheckUserExistsWithClientIdAsync(string clientId);
+        public Task<List<User>> GetClientsByAdvisorIdAsync(string advisorId);
     }
 }
