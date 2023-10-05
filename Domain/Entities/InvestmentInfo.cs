@@ -13,11 +13,8 @@ namespace IncedoInvest.Domain.Entities
         [Key]
         public int InvestorInfoId { get; set; }
 
-        [Required(ErrorMessage = "AdvisorId is required")]
-        public int AdvisorId { get; set; }
-
-        [Required(ErrorMessage = "ClientId is required")]
-        public int ClientId { get; set; }
+        [Required(ErrorMessage = "UserId is required")]
+        public int UserId { get; set; }
 
         [Required(ErrorMessage = "InvestmentAmount is required")]
         public double InvestmentAmount { get; set; }
@@ -31,11 +28,8 @@ namespace IncedoInvest.Domain.Entities
         [Required(ErrorMessage = "Deleted Flag is required")]
         public bool DeletedFlag { get; set; }
 
-        [ForeignKey("AdvisorId")]
-        public Advisor Advisor { get; set; }
-
-        [ForeignKey("ClientId")]
-        public Client Client { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; }
 
         [ForeignKey("InvestmentTypeId")]
         public InvestmentType InvestmentType { get; set; }

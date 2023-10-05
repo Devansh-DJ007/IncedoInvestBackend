@@ -21,7 +21,7 @@ namespace IncedoInvest.Infrastructure.DBContext
         {
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
         }
-
+        public DbSet<User> Users { get; set; }
         public DbSet<Advisor> Advisors { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Role> Roles { get; set; }

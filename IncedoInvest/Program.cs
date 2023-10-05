@@ -1,11 +1,9 @@
-using FluentAssertions.Common;
 using IncedoInvest.Application.AdvisorApp.Handlers.CommandHandlers;
 using IncedoInvest.Domain.Interfaces;
 using IncedoInvest.Infrastructure.DBContext;
 using IncedoInvest.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
@@ -23,6 +21,7 @@ builder.Services.AddDbContext<AppDbContextClass>(
             builder.Configuration.GetConnectionString("DefaultConnection"),
             x => x.MigrationsAssembly("IncedoInvest.Infrastructure"));
     });
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAdvisorRepository, AdvisorRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
@@ -44,8 +43,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
-//GIT Testing 1
 
 var app = builder.Build();
 
