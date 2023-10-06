@@ -1,4 +1,5 @@
 ﻿using IncedoInvest.Application.InvestmentTypeApp.Commands;
+using IncedoInvest.Application.Services;
 using IncedoInvest.Domain.Entities;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.InvestmentTypeApp.Handlers
 {
-    public class CreateInvestmentTypeHandler : IRequestHandler<CreateInvestmentTypeCommand, int>
+    public class CreateInvestmentTypeHandler : IRequestHandler<CreateInvestmentTypeCommand, Result<string>>
     {
         private readonly IInvestmentTypeRepository _repository;
 
@@ -16,7 +17,7 @@ namespace IncedoInvest.Application.InvestmentTypeApp.Handlers
             _repository = repository;
         }
 
-        public async Task<int> Handle(CreateInvestmentTypeCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(CreateInvestmentTypeCommand request, CancellationToken cancellationToken)
         {
             var investmentType = new InvestmentType
             {
@@ -26,7 +27,7 @@ namespace IncedoInvest.Application.InvestmentTypeApp.Handlers
 
             await _repository.AddInvestmentTypeAsync(investmentType);
 
-            return investmentType.InvestmentTypeId;
+            return Result<string>.Success("InvestmentType Added Successfully");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using IncedoInvest.Domain.Entities;
+﻿using IncedoInvest.Application.InvestmentTypeApp.Commands;
+using IncedoInvest.Domain.Entities;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -66,16 +67,17 @@ namespace IncedoInvest.Api.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] InvestmentType investmentType)
+        public async Task<IActionResult> Create([FromBody] CreateInvestmentTypeCommand command)
         {
-            try
+            var result = await _mediator.Send(command);
+
+            if (result.IsSuccess)
             {
-                await _investmentTypeRepository.AddInvestmentTypeAsync(investmentType);
-                return CreatedAtAction(nameof(GetById), new { id = investmentType.InvestmentTypeId }, investmentType);
+                return Ok("InvestmentType added successfully");
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error 3 occurred: {ex.Message}");
+                return BadRequest();
             }
         }
 
