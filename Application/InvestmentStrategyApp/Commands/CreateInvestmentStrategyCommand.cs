@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.InvestmentStrategyApp.Command
 {
-   public class CreateInvestmentStrategyCommand
+   public class CreateInvestmentStrategyCommand : IRequest<Result<string>>
     {
         [Required]
         public int InvestmentStrategyId { get; set; }
@@ -36,8 +36,5 @@ namespace IncedoInvest.Application.InvestmentStrategyApp.Command
 
         [Required(ErrorMessage = "Deleted Flag is required")]
         public bool DeletedFlag { get; set; }
-
-        [ForeignKey("InvestmentTypeId")]
-        public InvestmentType InvestmentType { get; set; }
     }
 }

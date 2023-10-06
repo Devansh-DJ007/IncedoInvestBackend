@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.InvestmentStrategyApp.Command
 {
-    public class DeleteInvestmentStrategyCommand
+    public class DeleteInvestmentStrategyCommand : IRequest<Result<string>>
     {
         public int InvestmentId { get; set; } 
     }

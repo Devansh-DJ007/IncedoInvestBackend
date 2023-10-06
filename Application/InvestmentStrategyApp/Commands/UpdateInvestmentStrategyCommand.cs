@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.InvestmentStrategyApp.Command
 {
-  public  class UpdateInvestmentStrategyCommand
+  public  class UpdateInvestmentStrategyCommand : IRequest<Result<InvestmentStrategy>>
     {
         public int InvestmentStrategyId { get; set; }
 

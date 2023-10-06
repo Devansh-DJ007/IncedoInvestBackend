@@ -12,3 +12,4 @@ namespace IncedoInvest.Application.InvestmentStrategyApp.Queries
     {
 
     }
+}

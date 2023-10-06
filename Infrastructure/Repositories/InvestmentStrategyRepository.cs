@@ -84,9 +84,9 @@ namespace IncedoInvest.Infrastructure.Repositories
             return await _dbContext.InvestmentStrategies.Where(x => x.InvestmentStrategyId == Id).FirstOrDefaultAsync();
         }
 
-        Task<Advisor> IInvestmentStrategyRepository.GetStrategyByIdAsync(int id)
-        {
-            throw new NotImplementedException();
+        public async Task<InvestmentStrategy> GetStrategyByNameAsync(string strategyName) 
+        { 
+            return await _dbContext.InvestmentStrategies.FirstOrDefaultAsync(s => s.InvestmentStrategyName == strategyName); 
         }
     }
 }
