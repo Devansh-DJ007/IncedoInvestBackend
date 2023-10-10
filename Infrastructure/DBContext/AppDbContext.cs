@@ -26,5 +26,6 @@ namespace IncedoInvest.Infrastructure.DBContext
         public DbSet<InvestmentInfo> InvestmentInfos { get; set; }
         public DbSet<InvestmentType> InvestmentTypes { get; set; }
         public DbSet<InvestmentStrategy> InvestmentStrategies { get; set; }
+        public DbSet<ProposedInvestment> ProposedInvestments { get; set; }
     }
 }

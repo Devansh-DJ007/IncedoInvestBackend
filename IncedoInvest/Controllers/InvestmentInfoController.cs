@@ -22,28 +22,6 @@ namespace IncedoInvest.Api.Controllers
             _investmentInfoRepository = investmentInfoRepository;
         }
 
-        /* [HttpPost("Create")]
-         [ProducesResponseType(StatusCodes.Status201Created)]
-         public async Task<IActionResult> CreateInvestmentInfo([FromBody] CreateInvestmentInfoCommand command)
-         {
-             try
-             {
-                 var result = await _mediator.Send(command);
-
-                 if (result.IsSuccess)
-                 {
-                     return CreatedAtRoute("GetInvestmentInfo", new { id = result.Data }, result.Data);
-                 }
-                 else
-                 {
-                     return BadRequest(result.ErrorMessage);
-                 }
-             }
-             catch (Exception ex)
-             {
-                 return BadRequest($"Error creating InvestmentInfo: {ex.Message}");
-             }
-         }*/
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateInvestmentInfo([FromBody] CreateInvestmentInfoCommand command)
@@ -54,8 +32,6 @@ namespace IncedoInvest.Api.Controllers
 
                 if (result.IsSuccess)
                 {
-                    // Specify the correct route name and route values
-                    //return CreatedAtRoute("GetInvestmentInfoById", new { investmentInfoId = result.Data }, result.Data);
                     return Ok("Registration successful");
                 }
                 else
