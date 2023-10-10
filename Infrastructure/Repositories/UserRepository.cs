@@ -133,7 +133,7 @@ namespace IncedoInvest.Infrastructure.Repositories
         public async Task<List<User>> GetClientsByAdvisorIdAsync(string advisorId)
         {
             var clients = await _dbContext.Users
-                .Where(user => user.AdvisorId == advisorId && user.AdvisorId != null)
+                .Where(user => user.AdvisorId == advisorId && user.RoleId == 2)
                 .ToListAsync();
 
             return clients;

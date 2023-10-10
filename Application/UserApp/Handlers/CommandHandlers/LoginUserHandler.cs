@@ -5,14 +5,10 @@ using IncedoInvest.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
 {
@@ -31,7 +27,6 @@ namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
         {
             try
             {
-                // Implement advisor login logic using _advisorRepository
                 var advisor = await _advisorRepository.GetUserByEmailAsync(request.Email);
 
                 string hashedPassword = "";
@@ -50,7 +45,6 @@ namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
                     return Result<string>.Fail("Invalid username or password");
                 }
 
-                // Generate and return a JWT token for the authenticated advisor
                 var token = GenerateJwtToken(advisor);
                 return Result<string>.Success(token);
             }
@@ -60,9 +54,6 @@ namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
             }
         }
 
-        // Implement your password verification logic here (e.g., using bcrypt)
-        // For simplicity, this example does not include actual password hashing.
-        // You should use a secure hashing algorithm in your production code.
         private bool VerifyPassword(string password, string passwordHash)
         {
             return password == passwordHash;
@@ -95,7 +86,7 @@ namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
             {
                 Console.WriteLine($"Message: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                throw; // Rethrow the exception to propagate it up the call stack
+                throw;
             }
         }
     }

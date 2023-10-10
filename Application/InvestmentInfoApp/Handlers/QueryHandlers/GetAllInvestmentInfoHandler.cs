@@ -23,7 +23,6 @@ namespace IncedoInvest.Application.InvestmentInfoApp.Handlers
         {
             try
             {
-                // Implement the logic to retrieve all InvestmentInfo entities
                 var investmentInfos = await _investmentInfoRepository.GetAllInvestmentInfoAsync();
 
                 return Result<List<InvestmentInfo>>.Success(investmentInfos);

@@ -11,17 +11,13 @@ namespace IncedoInvest.Domain.Interfaces
     {
         public interface IInvestmentInfoRepository
         {
-            Task AddInvestmentInfoAsync(InvestmentInfo investmentInfo);
-            Task UpdateInvestmentInfoAsync(InvestmentInfo investmentInfo);
-            Task DeleteInvestmentInfoAsync(int id);
-            Task<List<InvestmentInfo>> GetAllInvestmentInfoAsync();
-            Task<InvestmentInfo> GetInvestmentInfoByIdAsync(int id);
-            //Task<List<InvestmentInfo>> GetInvestmentInfoByClientIdAsync(int clientId);
-            //Task<List<InvestmentInfo>> GetInvestmentInfoByAdvisorIdAsync(int advisorId);
-            Task<List<InvestmentInfo>> GetInvestmentInfoByInvestmentTypeAsync(int investmentTypeId);
-
-            Task<bool> InvestmentInfoExistsAsync(int id);
-
+            public Task AddInvestmentInfoAsync(InvestmentInfo investmentInfo);
+            public Task UpdateInvestmentInfoAsync(InvestmentInfo investmentInfo);
+            public Task DeleteInvestmentInfoAsync(int id);
+            public Task<List<InvestmentInfo>> GetAllInvestmentInfoAsync();
+            public Task<InvestmentInfo> GetInvestmentInfoByIdAsync(int id);
+            public Task<bool> InvestmentInfoExistsAsync(int id);
+            public Task<double> GetTotalInvestmentAmountForClientAsync(int userId);
         }
     }
 

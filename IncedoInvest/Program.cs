@@ -1,4 +1,4 @@
-using IncedoInvest.Application.AdvisorApp.Handlers.CommandHandlers;
+using IncedoInvest.Application.UserApp.Handlers.CommandHandlers;
 using IncedoInvest.Domain.Interfaces;
 using IncedoInvest.Infrastructure.DBContext;
 using IncedoInvest.Infrastructure.Repositories;
@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies
-(typeof(RegisterAdvisorHandler).GetTypeInfo().Assembly));
+(typeof(RegisterUserHandler).GetTypeInfo().Assembly));
 builder.Services.AddDbContext<AppDbContextClass>(
     options =>
     {
@@ -22,8 +22,7 @@ builder.Services.AddDbContext<AppDbContextClass>(
             x => x.MigrationsAssembly("IncedoInvest.Infrastructure"));
     });
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAdvisorRepository, AdvisorRepository>();
-builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IInvestmentInfoRepository, InvestmentInfoRepository>();
 builder.Services.AddScoped<IInvestmentTypeRepository, InvestmentTypeRepository>();
 builder.Services.AddScoped<IInvestmentStrategyRepository, InvestmentStrategyRepository>();
 

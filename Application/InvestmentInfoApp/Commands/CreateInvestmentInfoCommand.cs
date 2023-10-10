@@ -12,7 +12,6 @@ namespace IncedoInvest.Application.InvestmentInfoApp.Commands
     public class CreateInvestmentInfoCommand : IRequest<Result<string>>
     {
         public int UserId { get; set; }
-        //public int AdvisorId { get; set; }
         public decimal InvestmentAmount { get; set; }
         public int InvestmentTypeId { get; set; }
     }

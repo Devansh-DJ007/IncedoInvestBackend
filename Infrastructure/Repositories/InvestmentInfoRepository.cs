@@ -27,7 +27,7 @@ namespace IncedoInvest.Infrastructure.Repositories
 
             try
             {
-                _dbContext.InvestorInfos.Add(investmentInfo);
+                _dbContext.InvestmentInfos.Add(investmentInfo);
                 await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
@@ -50,7 +50,7 @@ namespace IncedoInvest.Infrastructure.Repositories
 
             try
             {
-                _dbContext.InvestorInfos.Update(investmentInfo);
+                _dbContext.InvestmentInfos.Update(investmentInfo);
                 await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
@@ -62,12 +62,12 @@ namespace IncedoInvest.Infrastructure.Repositories
 
         public async Task DeleteInvestmentInfoAsync(int id)
         {
-            var investmentInfoToDelete = await _dbContext.InvestorInfos.FindAsync(id);
+            var investmentInfoToDelete = await _dbContext.InvestmentInfos.FindAsync(id);
             if (investmentInfoToDelete != null)
             {
                 try
                 {
-                    _dbContext.InvestorInfos.Remove(investmentInfoToDelete);
+                    _dbContext.InvestmentInfos.Remove(investmentInfoToDelete);
                     await _dbContext.SaveChangesAsync();
                 }
                 catch (DbUpdateException ex)
@@ -80,47 +80,30 @@ namespace IncedoInvest.Infrastructure.Repositories
 
         public async Task<List<InvestmentInfo>> GetAllInvestmentInfoAsync()
         {
-            return await _dbContext.InvestorInfos.ToListAsync();
+            return await _dbContext.InvestmentInfos.ToListAsync();
         }
 
         public async Task<InvestmentInfo> GetInvestmentInfoByIdAsync(int id)
         {
-            return await _dbContext.InvestorInfos
-                .Where(i => i.InvestorInfoId == id)
+            return await _dbContext.InvestmentInfos
+                .Where(i => i.InvestmentInfoId == id)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<bool> InvestmentInfoExistsAsync(int id)
         {
-            return await _dbContext.InvestorInfos
-                .AnyAsync(i => i.InvestorInfoId == id);
+            return await _dbContext.InvestmentInfos
+                .AnyAsync(i => i.InvestmentInfoId == id);
         }
 
-        public Task<List<InvestmentInfo>> GetInvestmentInfoByInvestmentTypeAsync(int investmentTypeId)
+        public async Task<double> GetTotalInvestmentAmountForClientAsync(int userId)
         {
-            throw new NotImplementedException();
+            var investments = await _dbContext.InvestmentInfos.Where(user => user.UserId == userId).ToListAsync();
+
+            double totalInvestmentAmount = investments.Sum(investment => investment.InvestmentAmount);
+
+            return totalInvestmentAmount;
         }
-
-        //public async Task<List<InvestmentInfo>> GetInvestmentInfoByClientIdAsync(int clientId)
-        //{
-        //    return await _dbContext.InvestorInfos
-        //        .Where(i => i.ClientId == clientId)
-        //        .ToListAsync();
-        //}
-
-        //public async Task<List<InvestmentInfo>> GetInvestmentInfoByAdvisorIdAsync(int advisorId)
-        //{
-        //    return await _dbContext.InvestorInfos
-        //        .Where(i => i.AdvisorId == advisorId)
-        //        .ToListAsync();
-        //}
-
-        //public async Task<List<InvestmentInfo>> GetInvestmentInfoByInvestmentTypeAsync(int investmentTypeId)
-        //{
-        //    return await _dbContext.InvestorInfos
-        //        .Where(i => i.InvestmentTypeId == investmentTypeId)
-        //        .ToListAsync();
-        //}
     }
 }
 

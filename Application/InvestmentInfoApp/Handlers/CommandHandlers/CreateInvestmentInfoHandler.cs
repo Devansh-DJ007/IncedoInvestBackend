@@ -22,11 +22,9 @@ namespace IncedoInvest.Application.InvestmentInfoApp.Handlers
         {
             try
             {
-                // Implement the logic to create a new InvestmentInfo
                 var investmentInfo = new InvestmentInfo
                 {
                     UserId = request.UserId,
-                    //AdvisorId = request.AdvisorId,
                     InvestmentAmount = (double)request.InvestmentAmount,
                     InvestmentTypeId = request.InvestmentTypeId,
                     Accepted = false,

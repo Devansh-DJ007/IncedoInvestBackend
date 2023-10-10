@@ -13,7 +13,6 @@ namespace IncedoInvest.Application.InvestmentInfoApp.Commands
     {
         public int InvestmentInfoId { get; set; }
         public int UserId { get; set; }
-        //public int AdvisorId { get; set; }
         public decimal InvestmentAmount { get; set; }
         public int InvestmentTypeId { get; set; }
     }

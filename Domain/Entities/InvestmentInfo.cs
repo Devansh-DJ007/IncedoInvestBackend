@@ -11,7 +11,7 @@ namespace IncedoInvest.Domain.Entities
     public class InvestmentInfo
     {
         [Key]
-        public int InvestorInfoId { get; set; }
+        public int InvestmentInfoId { get; set; }
 
         [Required(ErrorMessage = "UserId is required")]
         public int UserId { get; set; }

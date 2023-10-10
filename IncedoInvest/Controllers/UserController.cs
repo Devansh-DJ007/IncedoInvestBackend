@@ -1,12 +1,8 @@
-﻿using IncedoInvest.Application.AdvisorApp.Commands;
-using IncedoInvest.Application.UserApp.Commands;
+﻿using IncedoInvest.Application.UserApp.Commands;
 using IncedoInvest.Application.UserApp.Queries;
-using IncedoInvest.Domain.Entities;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace IncedoInvest.Api.Controllers
 {
@@ -93,6 +89,31 @@ namespace IncedoInvest.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetInvestmentAmountForClient/{userId}")]
+        public async Task<IActionResult> GetInvestmentAmountForClient(int userId)
+        {
+            var query = new GetInvestmentAmountForClientQuery(userId);
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        [HttpGet("AdvisorDashboard/{advisorId}")]
+        public async Task<IActionResult> GetAdvisorDashboard(string advisorId)
+        {
+            var query = new GetAdvisorDashboardQuery { AdvisorId = advisorId };
+            var result = await _mediator.Send(query);
+
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPut("users/{userId}")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
@@ -127,5 +148,6 @@ namespace IncedoInvest.Api.Controllers
                 return NotFound();
             }
         }
+        
     }
 }

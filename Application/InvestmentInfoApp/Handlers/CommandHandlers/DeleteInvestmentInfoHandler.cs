@@ -30,7 +30,7 @@ namespace IncedoInvest.Application.InvestmentInfoApp.Handlers
                     return Result<string>.Fail("InvestmentInfo not found");
                 }
 
-                await _investmentInfoRepository.DeleteInvestmentInfoAsync(investmentInfo.InvestorInfoId);
+                await _investmentInfoRepository.DeleteInvestmentInfoAsync(investmentInfo.InvestmentInfoId);
 
                 return Result<string>.Success("InvestmentInfo deleted successfully");
             }

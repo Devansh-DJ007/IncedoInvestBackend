@@ -134,8 +134,6 @@ namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
             return "A00000";
         }
 
-        // Implement JWT token generation logic using _configuration
-        // Return the generated token
         private string GenerateJwtToken(User user)
         {
             try
