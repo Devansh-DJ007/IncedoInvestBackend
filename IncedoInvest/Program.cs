@@ -1,9 +1,11 @@
+using IncedoInvest.Api;
 using IncedoInvest.Application.UserApp.Handlers.CommandHandlers;
 using IncedoInvest.Domain.Interfaces;
 using IncedoInvest.Infrastructure.DBContext;
 using IncedoInvest.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
@@ -30,10 +32,17 @@ builder.Services.AddScoped<IProposedInvestmentRepository, ProposedInvestmentRepo
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerGen();
 
 //JWT Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -44,7 +53,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
-});
+});*/
 
 var app = builder.Build();
 
@@ -54,11 +63,23 @@ app.UseCors(policy => policy.AllowAnyHeader()
                             .AllowCredentials());
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+/*if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+}*/
+app.UseSwagger(
+    options => options.RouteTemplate = $"swagger/{ApiConstants.ServiceName}/{{documentName}}/swagger.json");
+
+
+
+
+
+app.UseSwaggerUI(options =>
+{
+    options.RoutePrefix = "swagger/incedoinvest";
+    options.SwaggerEndpoint($"/swagger/{ApiConstants.ServiceName}/v1/swagger.json", "V1");
+});
 
 app.UseHttpsRedirection();
 
