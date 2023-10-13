@@ -14,6 +14,9 @@ namespace IncedoInvest.Domain.Interfaces
         public Task DeleteStrategyAsync(int id);
         public Task<List<InvestmentStrategy>> GetAllStrategyAsync();
         public Task<InvestmentStrategy> GetStrategyByIdAsync(int id);
-        Task<InvestmentStrategy> GetStrategyByNameAsync(string strategyName);
+        public Task<InvestmentStrategy> GetStrategyByNameAsync(string strategyName);
+        public double GetReturn1YByInvestmentStrategyId(int investmentStrategyId);
+        public double GetReturn10YByInvestmentStrategyId(int investmentStrategyId);
+        public double GetRisk10YByInvestmentStrategyId(int investmentStrategyId);
     }
 }

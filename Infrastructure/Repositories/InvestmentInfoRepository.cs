@@ -90,6 +90,35 @@ namespace IncedoInvest.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<InvestmentInfo>> GetInvestmentInfoByClientIdAsync(string clientId)
+        {
+            int userId = await GetUserIdByClientIdAsync(clientId);
+
+            if (userId > 0)
+            {
+                var investmentInfos = await _dbContext.InvestmentInfos
+                    .Where(ii => ii.UserId == userId)
+                    .ToListAsync();
+
+                return investmentInfos;
+            }
+
+            return null;
+
+        }
+
+        private async Task<int> GetUserIdByClientIdAsync(string clientId)
+        {
+            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.ClientId == clientId);
+
+            if (user != null)
+            {
+                return user.UserId;
+            }
+
+            return -1;
+        }
+
         public async Task<bool> InvestmentInfoExistsAsync(int id)
         {
             return await _dbContext.InvestmentInfos

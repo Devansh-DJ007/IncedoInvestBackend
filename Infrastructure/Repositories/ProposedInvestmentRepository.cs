@@ -29,5 +29,32 @@ namespace IncedoInvest.Infrastructure.Repositories
         {
             return await _dbContext.ProposedInvestments.ToListAsync();
         }
+
+        public async Task<List<ProposedInvestment>> GetProposedInvestmentsByInvestmentInfoIdAsync(int investmentInfoId)
+        {
+            return await _dbContext.ProposedInvestments
+                .Where(pi => pi.InvestmentInfoId == investmentInfoId)
+                .ToListAsync();
+        }
+
+        public async Task AcceptProposedInvestmentAsync(int proposedInvestmentId)
+        {
+            try
+            {
+                var proposedInvestment = await _dbContext.ProposedInvestments.FindAsync(proposedInvestmentId);
+                proposedInvestment.AcceptedFlag = true;
+                _dbContext.ProposedInvestments.Update(proposedInvestment);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                var innerException = ex.InnerException;
+                throw innerException;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace IncedoInvest.Domain.Interfaces
     {
         public Task AddProposedInvestmentAsync(ProposedInvestment propesedInvestment);
         public Task<List<ProposedInvestment>> GetAllProposedInvestmentsAsync();
+        public Task<List<ProposedInvestment>> GetProposedInvestmentsByInvestmentInfoIdAsync(int investmentInfoId);
+        public Task AcceptProposedInvestmentAsync(int proposedInvestmentId);
     }
 }
