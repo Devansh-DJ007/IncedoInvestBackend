@@ -18,6 +18,7 @@ namespace IncedoInvest.Domain.Interfaces
             public Task<InvestmentInfo> GetInvestmentInfoByIdAsync(int id);
             public Task<bool> InvestmentInfoExistsAsync(int id);
             public Task<double> GetTotalInvestmentAmountForClientAsync(int userId);
+            public Task<IEnumerable<InvestmentInfo>> GetInvestmentInfoByClientIdAsync(string clientId);
         }
     }
 

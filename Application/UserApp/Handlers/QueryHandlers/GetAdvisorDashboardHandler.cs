@@ -20,16 +20,25 @@ namespace IncedoInvest.Application.UserApp.Handlers.QueryHandlers
         {
             var clients = await _userRepository.GetClientsByAdvisorIdAsync(request.AdvisorId);
 
-            var advisorDashboardTasks = clients.Select(async client => new AdvisorDashboardDTO
+            var advisorDashboardDTOs = new List<AdvisorDashboardDTO>();
+
+            foreach (var client in clients)
             {
-                ClientName = $"{client.FirstName} {client.LastName}",
-                AdvisorId = request.AdvisorId,
-                InvestmentAmount = await _investmentInfoRepository.GetTotalInvestmentAmountForClientAsync(client.UserId).ConfigureAwait(false)
-            });
+                var clientName = $"{client.FirstName} {client.LastName}";
+                var advisorId = request.AdvisorId;
+                var investmentAmount = await _investmentInfoRepository.GetTotalInvestmentAmountForClientAsync(client.UserId).ConfigureAwait(false);
 
-            var advisorDashboardDTOs = await Task.WhenAll(advisorDashboardTasks);
+                var advisorDashboardDTO = new AdvisorDashboardDTO
+                {
+                    ClientName = clientName,
+                    AdvisorId = advisorId,
+                    InvestmentAmount = investmentAmount
+                };
 
-            return advisorDashboardDTOs.ToList();
+                advisorDashboardDTOs.Add(advisorDashboardDTO);
+            }
+
+            return advisorDashboardDTOs;
         }
     }
 }

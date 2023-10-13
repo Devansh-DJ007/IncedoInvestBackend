@@ -88,5 +88,33 @@ namespace IncedoInvest.Infrastructure.Repositories
         { 
             return await _dbContext.InvestmentStrategies.FirstOrDefaultAsync(s => s.InvestmentStrategyName == strategyName); 
         }
+
+        public double GetReturn1YByInvestmentStrategyId(int investmentStrategyId)
+        {
+            var strategy = _dbContext.InvestmentStrategies.FirstOrDefault(s => s.InvestmentStrategyId == investmentStrategyId);
+            if (strategy != null)
+            {
+                return strategy.Return1Y;
+            }
+            return 0.0;
+        }
+        public double GetReturn10YByInvestmentStrategyId(int investmentStrategyId)
+        {
+            var strategy = _dbContext.InvestmentStrategies.FirstOrDefault(s => s.InvestmentStrategyId == investmentStrategyId);
+            if (strategy != null)
+            {
+                return strategy.Return10Y;
+            }
+            return 0.0;
+        }
+        public double GetRisk10YByInvestmentStrategyId(int investmentStrategyId)
+        {
+            var strategy = _dbContext.InvestmentStrategies.FirstOrDefault(s => s.InvestmentStrategyId == investmentStrategyId);
+            if (strategy != null)
+            {
+                return strategy.Risk10Y;
+            }
+            return 0.0;
+        }
     }
 }

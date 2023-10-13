@@ -22,159 +22,6 @@ namespace IncedoInvest.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AdvisorClient", b =>
-                {
-                    b.Property<int>("AdvisorsAdvisorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClientsClientId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AdvisorsAdvisorId", "ClientsClientId");
-
-                    b.HasIndex("ClientsClientId");
-
-                    b.ToTable("AdvisorClient", (string)null);
-                });
-
-            modelBuilder.Entity("IncedoInvest.Domain.Entities.Advisor", b =>
-                {
-                    b.Property<int>("AdvisorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdvisorId"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Company")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("DeletedFlag")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("AdvisorId");
-
-                    b.ToTable("Advisors");
-                });
-
-            modelBuilder.Entity("IncedoInvest.Domain.Entities.Client", b =>
-                {
-                    b.Property<int>("ClientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClientId"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Company")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("DeletedFlag")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("ClientId");
-
-                    b.ToTable("Clients");
-                });
-
             modelBuilder.Entity("IncedoInvest.Domain.Entities.InvestmentInfo", b =>
                 {
                     b.Property<int>("InvestmentInfoId")
@@ -261,6 +108,32 @@ namespace IncedoInvest.Infrastructure.Migrations
                     b.HasKey("InvestmentTypeId");
 
                     b.ToTable("InvestmentTypes");
+                });
+
+            modelBuilder.Entity("IncedoInvest.Domain.Entities.ProposedInvestment", b =>
+                {
+                    b.Property<int>("PropesedInvestmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropesedInvestmentId"));
+
+                    b.Property<bool>("AcceptedFlag")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("InvestmentInfoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentStrategyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PropesedInvestmentId");
+
+                    b.HasIndex("InvestmentInfoId");
+
+                    b.HasIndex("InvestmentStrategyId");
+
+                    b.ToTable("ProposedInvestments");
                 });
 
             modelBuilder.Entity("IncedoInvest.Domain.Entities.Role", b =>
@@ -370,21 +243,6 @@ namespace IncedoInvest.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AdvisorClient", b =>
-                {
-                    b.HasOne("IncedoInvest.Domain.Entities.Advisor", null)
-                        .WithMany()
-                        .HasForeignKey("AdvisorsAdvisorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IncedoInvest.Domain.Entities.Client", null)
-                        .WithMany()
-                        .HasForeignKey("ClientsClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("IncedoInvest.Domain.Entities.InvestmentInfo", b =>
                 {
                     b.HasOne("IncedoInvest.Domain.Entities.InvestmentType", "InvestmentType")
@@ -413,6 +271,25 @@ namespace IncedoInvest.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("InvestmentType");
+                });
+
+            modelBuilder.Entity("IncedoInvest.Domain.Entities.ProposedInvestment", b =>
+                {
+                    b.HasOne("IncedoInvest.Domain.Entities.InvestmentInfo", "InvestmentInfo")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IncedoInvest.Domain.Entities.InvestmentStrategy", "InvestmentStrategy")
+                        .WithMany()
+                        .HasForeignKey("InvestmentStrategyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InvestmentInfo");
+
+                    b.Navigation("InvestmentStrategy");
                 });
 
             modelBuilder.Entity("IncedoInvest.Domain.Entities.User", b =>

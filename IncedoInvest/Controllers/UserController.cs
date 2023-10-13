@@ -1,4 +1,5 @@
-﻿using IncedoInvest.Application.UserApp.Commands;
+﻿using IncedoInvest.Application.Services;
+using IncedoInvest.Application.UserApp.Commands;
 using IncedoInvest.Application.UserApp.Queries;
 using IncedoInvest.Domain.Interfaces;
 using MediatR;
@@ -107,6 +108,37 @@ namespace IncedoInvest.Api.Controllers
             if (result is not null)
             {
                 return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("ClientDashboard/{clientId}")]
+        public async Task<IActionResult> GetClientDashboard(string clientId)
+        {
+            var query = new GetClientDashboardQuery { ClientId = clientId };
+            var result = await _mediator.Send(query);
+
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("AcceptProposedInvestment")]
+        public async Task<IActionResult> AcceptProposedInvestment([FromBody] AcceptProposedInvestmentCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsSuccess)
+            {
+                return Ok("Proposed Investment accepted successfully");
             }
             else
             {

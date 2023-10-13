@@ -12,56 +12,6 @@ namespace IncedoInvest.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Advisors",
-                columns: table => new
-                {
-                    AdvisorId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Company = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedFlag = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Advisors", x => x.AdvisorId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    ClientId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Company = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedFlag = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.ClientId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "InvestmentTypes",
                 columns: table => new
                 {
@@ -87,30 +37,6 @@ namespace IncedoInvest.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.RoleID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AdvisorClient",
-                columns: table => new
-                {
-                    AdvisorsAdvisorId = table.Column<int>(type: "int", nullable: false),
-                    ClientsClientId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AdvisorClient", x => new { x.AdvisorsAdvisorId, x.ClientsClientId });
-                    table.ForeignKey(
-                        name: "FK_AdvisorClient_Advisors_AdvisorsAdvisorId",
-                        column: x => x.AdvisorsAdvisorId,
-                        principalTable: "Advisors",
-                        principalColumn: "AdvisorId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AdvisorClient_Clients_ClientsClientId",
-                        column: x => x.ClientsClientId,
-                        principalTable: "Clients",
-                        principalColumn: "ClientId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,10 +98,10 @@ namespace IncedoInvest.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InvestorInfos",
+                name: "InvestmentInfos",
                 columns: table => new
                 {
-                    InvestorInfoId = table.Column<int>(type: "int", nullable: false)
+                    InvestmentInfoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     InvestmentAmount = table.Column<double>(type: "float", nullable: false),
@@ -185,25 +111,57 @@ namespace IncedoInvest.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InvestorInfos", x => x.InvestorInfoId);
+                    table.PrimaryKey("PK_InvestmentInfos", x => x.InvestmentInfoId);
                     table.ForeignKey(
-                        name: "FK_InvestorInfos_InvestmentTypes_InvestmentTypeId",
+                        name: "FK_InvestmentInfos_InvestmentTypes_InvestmentTypeId",
                         column: x => x.InvestmentTypeId,
                         principalTable: "InvestmentTypes",
                         principalColumn: "InvestmentTypeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InvestorInfos_Users_UserId",
+                        name: "FK_InvestmentInfos_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProposedInvestments",
+                columns: table => new
+                {
+                    PropesedInvestmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InvestmentInfoId = table.Column<int>(type: "int", nullable: false),
+                    InvestmentStrategyId = table.Column<int>(type: "int", nullable: false),
+                    AcceptedFlag = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProposedInvestments", x => x.PropesedInvestmentId);
+                    table.ForeignKey(
+                        name: "FK_ProposedInvestments_InvestmentInfos_InvestmentInfoId",
+                        column: x => x.InvestmentInfoId,
+                        principalTable: "InvestmentInfos",
+                        principalColumn: "InvestmentInfoId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProposedInvestments_InvestmentStrategies_InvestmentStrategyId",
+                        column: x => x.InvestmentStrategyId,
+                        principalTable: "InvestmentStrategies",
+                        principalColumn: "InvestmentStrategyId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_AdvisorClient_ClientsClientId",
-                table: "AdvisorClient",
-                column: "ClientsClientId");
+                name: "IX_InvestmentInfos_InvestmentTypeId",
+                table: "InvestmentInfos",
+                column: "InvestmentTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentInfos_UserId",
+                table: "InvestmentInfos",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestmentStrategies_InvestmentTypeId",
@@ -211,14 +169,14 @@ namespace IncedoInvest.Infrastructure.Migrations
                 column: "InvestmentTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvestorInfos_InvestmentTypeId",
-                table: "InvestorInfos",
-                column: "InvestmentTypeId");
+                name: "IX_ProposedInvestments_InvestmentInfoId",
+                table: "ProposedInvestments",
+                column: "InvestmentInfoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvestorInfos_UserId",
-                table: "InvestorInfos",
-                column: "UserId");
+                name: "IX_ProposedInvestments_InvestmentStrategyId",
+                table: "ProposedInvestments",
+                column: "InvestmentStrategyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -230,25 +188,19 @@ namespace IncedoInvest.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AdvisorClient");
+                name: "ProposedInvestments");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentInfos");
 
             migrationBuilder.DropTable(
                 name: "InvestmentStrategies");
 
             migrationBuilder.DropTable(
-                name: "InvestorInfos");
-
-            migrationBuilder.DropTable(
-                name: "Advisors");
-
-            migrationBuilder.DropTable(
-                name: "Clients");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "InvestmentTypes");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Roles");
