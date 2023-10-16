@@ -11,5 +11,7 @@ namespace IncedoInvest.Application.Services
         public string ClientName { get; set; }
         public string AdvisorId { get; set; }
         public double InvestmentAmount { get; set; }
+        public string InvestementType { get; set; }
+        public string Status { get; set; }
     }
 }

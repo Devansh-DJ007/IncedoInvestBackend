@@ -27,12 +27,15 @@ namespace IncedoInvest.Application.UserApp.Handlers.QueryHandlers
                 var clientName = $"{client.FirstName} {client.LastName}";
                 var advisorId = request.AdvisorId;
                 var investmentAmount = await _investmentInfoRepository.GetTotalInvestmentAmountForClientAsync(client.UserId).ConfigureAwait(false);
+                var investementType = await _investmentInfoRepository.GetInvestmentTypeAsync(client.UserId).ConfigureAwait(false);
 
                 var advisorDashboardDTO = new AdvisorDashboardDTO
                 {
                     ClientName = clientName,
                     AdvisorId = advisorId,
-                    InvestmentAmount = investmentAmount
+                    InvestmentAmount = investmentAmount,
+                    InvestementType = investementType,
+                    Status = "Funded"
                 };
 
                 advisorDashboardDTOs.Add(advisorDashboardDTO);

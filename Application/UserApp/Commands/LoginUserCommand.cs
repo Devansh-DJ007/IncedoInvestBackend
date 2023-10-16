@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IncedoInvest.Application.UserApp.Commands
 {
-    public class LoginUserCommand : IRequest<Result<string>>
+    public class LoginUserCommand : IRequest<LoginDTO>
     {
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]

@@ -26,9 +26,9 @@ namespace IncedoInvest.Api.Controllers
         {
             var result = await _mediator.Send(command);
 
-            if (result.IsSuccess)
+            if (!string.IsNullOrEmpty(result.Token))
             {
-                return Ok(new { Token = result.Data });
+                return Ok(result);
             }
             else
             {
