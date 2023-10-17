@@ -12,22 +12,22 @@ using System.Text;
 
 namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
 {
-    public class LoginUserHandler : IRequestHandler<LoginUserCommand, Result<string>>
+    public class LoginUserHandler : IRequestHandler<LoginUserCommand, LoginDTO>
     {
-        private readonly IUserRepository _advisorRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
 
-        public LoginUserHandler(IUserRepository advisorRepository, IConfiguration configuration)
+        public LoginUserHandler(IUserRepository userRepository, IConfiguration configuration)
         {
-            _advisorRepository = advisorRepository;
+            _userRepository = userRepository;
             _configuration = configuration;
         }
 
-        public async Task<Result<string>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDTO> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var advisor = await _advisorRepository.GetUserByEmailAsync(request.Email);
+                var user = await _userRepository.GetUserByEmailAsync(request.Email);
 
                 string hashedPassword = "";
                 string salt = "zxcvb";
@@ -40,17 +40,35 @@ namespace IncedoInvest.Application.UserApp.Handlers.CommandHandlers
                     hashedPassword = Convert.ToBase64String(hashBytes);
                 }
 
-                if (advisor == null || !VerifyPassword(advisor.Password, hashedPassword))
+                if (user == null || !VerifyPassword(user.Password, hashedPassword))
                 {
-                    return Result<string>.Fail("Invalid username or password");
+                    return new LoginDTO
+                    {
+                        Token = null,
+                        RoleId = 0,
+                        AdvisorId = null,
+                        ClientId = null
+                    };
                 }
 
-                var token = GenerateJwtToken(advisor);
-                return Result<string>.Success(token);
+                var token = GenerateJwtToken(user);
+                return new LoginDTO
+                {
+                    Token = token,
+                    RoleId = user.RoleId,
+                    AdvisorId = user.AdvisorId,
+                    ClientId = user.ClientId
+                };
             }
             catch (Exception ex)
             {
-                return Result<string>.Fail(ex.Message);
+                return new LoginDTO
+                {
+                    Token = null,
+                    RoleId = 0,
+                    AdvisorId = null,
+                    ClientId = null
+                };
             }
         }
 

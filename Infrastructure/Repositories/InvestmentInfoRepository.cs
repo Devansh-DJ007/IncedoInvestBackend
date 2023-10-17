@@ -133,6 +133,29 @@ namespace IncedoInvest.Infrastructure.Repositories
 
             return totalInvestmentAmount;
         }
+
+        public async Task<string> GetInvestmentTypeAsync(int userId)
+        {
+            var investmentTypes = await _dbContext.InvestmentInfos
+                .Where(info => info.UserId == userId)
+                .Select(info => info.InvestmentTypeId)
+                .Distinct()
+                .ToListAsync();
+
+            if (investmentTypes.Count == 0)
+            {
+                return "No Investments";
+            }
+            else if (investmentTypes.Count == 1)
+            {
+                int typeId = investmentTypes[0];
+                return typeId == 1 ? "Gold" : typeId == 4 ? "Stock" : "Other";
+            }
+            else
+            {
+                return "Multiple";
+            }
+        }
     }
 }
 
