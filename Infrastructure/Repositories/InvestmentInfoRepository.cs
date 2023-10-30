@@ -93,7 +93,6 @@ namespace IncedoInvest.Infrastructure.Repositories
         public async Task<IEnumerable<InvestmentInfo>> GetInvestmentInfoByClientIdAsync(string clientId)
         {
             int userId = await GetUserIdByClientIdAsync(clientId);
-
             if (userId > 0)
             {
                 var investmentInfos = await _dbContext.InvestmentInfos
@@ -102,9 +101,21 @@ namespace IncedoInvest.Infrastructure.Repositories
 
                 return investmentInfos;
             }
-
             return null;
+        }
 
+        public async Task<IEnumerable<InvestmentInfo>> GetInvestmentInfoByAdvisorIdAsync(string advisorId)
+        {
+            int userId = await GetUserIdByAdvisorIdAsync(advisorId);
+            if (userId > 0)
+            {
+                var investmentInfos = await _dbContext.InvestmentInfos
+                    .Where(ii => ii.UserId == userId)
+                    .ToListAsync();
+
+                return investmentInfos;
+            }
+            return null;
         }
 
         private async Task<int> GetUserIdByClientIdAsync(string clientId)
@@ -116,6 +127,18 @@ namespace IncedoInvest.Infrastructure.Repositories
                 return user.UserId;
             }
 
+            return -1;
+        }
+
+        private async Task<int> GetUserIdByAdvisorIdAsync(string advisorId)
+        {
+            var users = await _dbContext.Users.Where(u => u.AdvisorId == advisorId).ToListAsync();
+
+            foreach (var user in users)
+            {
+                if (user.ClientId == "")
+                    return user.UserId;
+            }
             return -1;
         }
 

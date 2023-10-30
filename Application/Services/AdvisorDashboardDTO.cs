@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IncedoInvest.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace IncedoInvest.Application.Services
         public double InvestmentAmount { get; set; }
         public string InvestementType { get; set; }
         public string Status { get; set; }
+        public List<CustomProposedInvestmentDTO> ProposedInvestments { get; set; }
     }
 }
