@@ -31,7 +31,7 @@ namespace IncedoInvest.Api.Controllers
             }
         }
 
-        [HttpGet("Users")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetUsers([FromQuery] GetAllPropsedInvestmentsQuery query)
         {
             var proposedInvestments = await _mediator.Send(query);

@@ -2,11 +2,6 @@
 using IncedoInvest.Domain.Interfaces;
 using IncedoInvest.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IncedoInvest.Infrastructure.Repositories
 {
@@ -39,22 +34,24 @@ namespace IncedoInvest.Infrastructure.Repositories
 
         public async Task AcceptProposedInvestmentAsync(int proposedInvestmentId)
         {
-            try
+            var proposedInvestment = await _dbContext.ProposedInvestments.FindAsync(proposedInvestmentId);
+            proposedInvestment.AcceptedFlag = true;
+            _dbContext.ProposedInvestments.Update(proposedInvestment);
+            var investmentInfo = await _dbContext.InvestmentInfos.FindAsync(proposedInvestment.InvestmentInfoId);
+            investmentInfo.Accepted = true;
+
+
+            var investmentinfos = await _dbContext.ProposedInvestments
+                .Where(proposedinvestment => proposedinvestment.InvestmentInfoId == investmentInfo.InvestmentInfoId &&
+                proposedinvestment.AcceptedFlag == false).ToListAsync();
+
+            foreach (var proposed in investmentinfos)
             {
-                var proposedInvestment = await _dbContext.ProposedInvestments.FindAsync(proposedInvestmentId);
-                proposedInvestment.AcceptedFlag = true;
-                _dbContext.ProposedInvestments.Update(proposedInvestment);
-                await _dbContext.SaveChangesAsync();
+                _dbContext.ProposedInvestments.Remove(proposed);
             }
-            catch (DbUpdateException ex)
-            {
-                var innerException = ex.InnerException;
-                throw innerException;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
+            _dbContext.InvestmentInfos.Update(investmentInfo);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

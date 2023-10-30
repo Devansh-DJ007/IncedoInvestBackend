@@ -9,10 +9,8 @@ namespace IncedoInvest.Application.Services
 {
     public class ClientDashboardDTO
     {
-        //public AcceptedProposedInvestments acceptedProposedInvestments {  get; set; }
-
-        //public NotAcceptedProposedInvestments notAcceptedProposedInvestments { get; set; }
-
+        public string advisorId {  get; set; }
+        public string investmentType { get; set; }
         public int proposedInvestmentId { get; set; }
         public int investmentInfoId { get; set; }
         public double investmentAmount { get; set; }

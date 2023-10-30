@@ -23,9 +23,9 @@ namespace IncedoInvest.Domain.Entities
         public bool AcceptedFlag { get; set; }
 
         [ForeignKey("InvestmentInfoId")]
-        public InvestmentInfo InvestmentInfo { get; set; }
+        public InvestmentInfo ?InvestmentInfo { get; set; }
 
         [ForeignKey("InvestmentStrategyId")]
-        public InvestmentStrategy InvestmentStrategy { get; set; }
+        public InvestmentStrategy ?InvestmentStrategy { get; set; }
     }
 }

@@ -36,6 +36,8 @@ namespace IncedoInvest.Application.UserApp.Handlers.QueryHandlers
                         {
                             var clientInvestmentDTO = new ClientDashboardDTO
                             {
+                                advisorId = _investmentInfoRepository.GetAdvisorIdByUserId(investmentInfo.UserId),
+                                investmentType = _investmentInfoRepository.GetInvestmentTypeByInvestmentTypeId(investmentInfo.InvestmentTypeId),
                                 proposedInvestmentId = pi.PropesedInvestmentId,
                                 investmentInfoId = pi.InvestmentInfoId,
                                 investmentAmount = investmentInfo.InvestmentAmount,

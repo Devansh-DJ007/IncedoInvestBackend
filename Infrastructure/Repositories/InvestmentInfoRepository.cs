@@ -156,6 +156,18 @@ namespace IncedoInvest.Infrastructure.Repositories
                 return "Multiple";
             }
         }
+
+        public string GetInvestmentTypeByInvestmentTypeId(int investmentTypeId)
+        {
+            var investmentType = _dbContext.InvestmentTypes.Where(pi => pi.InvestmentTypeId ==  investmentTypeId).FirstOrDefault();
+            return investmentType.InvestmentTypeName;
+        }
+
+        public string GetAdvisorIdByUserId(int userId)
+        {
+            var user = _dbContext.Users.Where(pi => pi.UserId == userId).FirstOrDefault();
+            return user.ClientId;
+        }
     }
 }
 
